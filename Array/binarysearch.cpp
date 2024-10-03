@@ -1,52 +1,66 @@
-// C++ program to implement 
-// iterative Binary Search 
-#include <bits/stdc++.h> 
-using namespace std; 
+#include <iostream>
 
-// Iretative Binary Search function to find the index of an 
-// element 'x' in a sorted array 'arr' if elements is 
-// present, otherwise it return -1 
+using namespace std;
 
-// low: The index of the first element in the current 
-// sub-array high: The index of the last element in the 
-// current sub-array 
-int binarySearch(int arr[], int low, int high, int x) 
-{ 
-	while (low <= high) { 
-		int mid = low + (high - low) / 2; 
+int insert(int arr[], int n, int item, int pos)
+{
+    // Shift elements to the right to make space for the new element
+    for(int i = n; i >= pos; i--)
+        arr[i] = arr[i - 1];
 
-		// If the middle element is equal to 'x', we have 
-		// found the element, return its index 
-		if (arr[mid] == x) 
-			return mid; 
+    // Insert the new item at the given position
+    arr[pos - 1] = item;
 
-		// If the middle element is smaller than 'x', search 
-		// in the right half of the array 
-		if (arr[mid] < x) 
-			low = mid + 1; 
+    // Return the new size
+    return n + 1;
+}
 
-		// If the middle element is greater than 'x', search 
-		// in the left half of the array 
-		else
-			high = mid - 1; 
-	} 
+int main()
+{
+    int n, i, pos, item;
 
-	// If the base case is reached, the element is not 
-	// present in the array, return -1 
-	return -1; 
-} 
+    // Input size of the array
+    cout << "Enter Size of Array: ";
+    cin >> n;
 
-// Driver code 
-int main(void) 
-{ 
-	int arr[] = { 2, 3, 4, 10, 40 }; 
+    // Dynamically allocate memory for array
+    int* arr = new int[n + 1]; // allocate for n + 1 for future insertion
 
-	// Element to be searched 
-	int x = 10; 
-	int n = sizeof(arr) / sizeof(arr[0]); 
-	int result = binarySearch(arr, 0, n - 1, x); 
-	(result == -1) 
-		? cout << "Element is not present in array"
-		: cout << "Element is present at index " << result; 
-	return 0; 
+    // Input array elements
+    cout << "Enter Elements: ";
+    for(i = 0; i < n; i++)
+        cin >> arr[i];
+
+    // Input the new element and its position
+    cout << "Enter the new element: ";
+    cin >> item;
+    cout << "Enter Position: ";
+    cin >> pos;
+
+    // Ensure the position is valid
+    if(pos < 1 || pos > n + 1) {
+        cout << "Invalid position!" << endl;
+        delete[] arr; // free memory
+        return -1;
+    }
+
+    // Display the original array
+    cout << "Original Array: ";
+    for(i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+
+    // Insert the element and get the new size
+    n = insert(arr, n, item, pos);
+
+    // Display the updated array
+    cout << "Updated Array: ";
+    for(i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+
+    // Free dynamically allocated memory
+    delete[] arr;
+    
+    return 0;
 }
